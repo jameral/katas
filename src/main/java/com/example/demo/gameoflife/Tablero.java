@@ -20,19 +20,19 @@ public class Tablero {
     }
 
     public void siguienteGeneracion(){
-        Arrays.stream(celdas).forEach(this::calcularSiguienteEstadoParaFila);
-        Arrays.stream(celdas).forEach(this::asignarNuevoEstadoParaFila);
+        Arrays.stream(celdas).parallel().forEach(this::calcularSiguienteEstadoParaFila);
+        Arrays.stream(celdas).parallel().forEach(this::asignarNuevoEstadoParaFila);
     }
 
     private void calcularSiguienteEstadoParaFila(Celda[] celdas) {
         for (Celda celda : celdas){
-            calculaSiguienteEstado(celda);
+            calcularSiguienteEstadoDeCelda(celda);
         }
     }
 
-    private void calculaSiguienteEstado(Celda celda){
-        long vecinosVivos = calculaVecinosVivosDeCelda(celda);
-        boolean celdaVive = celda.isAlive();
+    private void calcularSiguienteEstadoDeCelda(Celda celda){
+        long vecinosVivos = calcularVecinosVivosDeCelda(celda);
+        boolean celdaVive = celda.isVivo();
         boolean faltaPoblacion = vecinosVivos < 2;
         boolean sobrePoblacion = vecinosVivos > 3;
         if (celdaVive && (faltaPoblacion || sobrePoblacion)){
@@ -40,32 +40,32 @@ public class Tablero {
         } else if (!celdaVive && vecinosVivos == 3){
             celda.setSiguienteEstado(true);
         } else {
-            celda.setSiguienteEstado(celda.isAlive());
+            celda.setSiguienteEstado(celda.isVivo());
         }
     }
 
-    private long calculaVecinosVivosDeCelda(Celda celda){
+    private long calcularVecinosVivosDeCelda(Celda celda){
         return celda.getVecinos().values().stream()
                 .filter(Objects::nonNull)
-                .filter(Celda::isAlive)
+                .filter(Celda::isVivo)
                 .count();
     }
 
     private void asignarNuevoEstadoParaFila(Celda[] celdas) {
         for (Celda celda : celdas){
             boolean siguienteEstado = celda.isSiguienteEstado();
-            celda.setAlive(siguienteEstado);
+            celda.setVivo(siguienteEstado);
         }
     }
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(alto * ancho + alto +5);
         sb.append(ancho).append("   ").append(alto).append("\n");
         for (int i= alto-1;i>=0;i--){
             for (int j=0;j<=ancho-1;j++){
                 Celda celda = celdas[j][i];
-                sb.append(celda.isAlive() ? ALIVE : DEAD);
+                sb.append(celda.isVivo() ? ALIVE : DEAD);
             }
             sb.append("\n");
         }

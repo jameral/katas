@@ -7,14 +7,14 @@ public class Celda {
 
     private final int x;
     private final int y;
-    private boolean isAlive;
+    private boolean vivo;
     private boolean siguienteEstado;
     private final Map<Vecino, Celda>vecinos = new HashMap<>();
 
-    public Celda(int x, int y, boolean isAlive) {
+    public Celda(int x, int y, boolean vivo) {
         this.x = x;
         this.y = y;
-        this.isAlive = isAlive;
+        this.vivo = vivo;
     }
 
     public int getX() {
@@ -25,12 +25,12 @@ public class Celda {
         return y;
     }
 
-    public boolean isAlive() {
-        return isAlive;
+    public boolean isVivo() {
+        return vivo;
     }
 
-    public void setAlive(boolean alive) {
-        isAlive = alive;
+    public void setVivo(boolean vivo) {
+        this.vivo = vivo;
     }
 
     public Map<Vecino, Celda> getVecinos() {

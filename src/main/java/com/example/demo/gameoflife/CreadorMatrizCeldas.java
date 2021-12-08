@@ -33,11 +33,11 @@ public class CreadorMatrizCeldas {
     private void crearFila(int y) {
         for (int x=0;x<ancho;x++){
             Celda celda = recuperarCeldaOCrearlaSiNoExiste(x, y);
-            setVecinos(celda);
+            establecerVecinos(celda);
         }
     }
 
-    private void setVecinos(Celda celda){
+    private void establecerVecinos(Celda celda){
         Vecino[] vecinos = Vecino.values();
         Map<Vecino, Celda> celdasVecinas = celda.getVecinos();
         for (Vecino vecino : vecinos){
@@ -67,7 +67,8 @@ public class CreadorMatrizCeldas {
     }
     private Celda crearCelda(int x, int y) {
         char estado = obtenerEstadoDeArrayAPartirDeCoordenadasDeMatriz(x, y);
-        Celda celda = new Celda(x, y, estado == '*');
+        boolean isAlive = estado == '*';
+        Celda celda = new Celda(x, y, isAlive);
         celdas[x][y] = celda;
         return celda;
     }
