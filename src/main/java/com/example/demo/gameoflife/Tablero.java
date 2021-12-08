@@ -9,6 +9,9 @@ public class Tablero {
     private final int alto;
     private final int ancho;
 
+    public static final String ALIVE = "*";
+    public static final String DEAD = ".";
+
     public Tablero(int alto, int ancho, String estadoInicial){
         super();
         this.alto = alto;
@@ -28,7 +31,7 @@ public class Tablero {
     }
 
     private void calculaSiguienteEstado(Celda celda){
-        long vecinosVivos = Arrays.stream(celda.getVecinos()).filter(Objects::nonNull).filter(Celda::isAlive).count();
+        long vecinosVivos = calculaVecinosVivosDeCelda(celda);
         boolean celdaVive = celda.isAlive();
         boolean faltaPoblacion = vecinosVivos < 2;
         boolean sobrePoblacion = vecinosVivos > 3;
@@ -39,6 +42,13 @@ public class Tablero {
         } else {
             celda.setSiguienteEstado(celda.isAlive());
         }
+    }
+
+    private long calculaVecinosVivosDeCelda(Celda celda){
+        return celda.getVecinos().values().stream()
+                .filter(Objects::nonNull)
+                .filter(Celda::isAlive)
+                .count();
     }
 
     private void asignarNuevoEstadoParaFila(Celda[] celdas) {
@@ -55,7 +65,7 @@ public class Tablero {
         for (int i= alto-1;i>=0;i--){
             for (int j=0;j<=ancho-1;j++){
                 Celda celda = celdas[j][i];
-                sb.append(celda.isAlive() ? "*" : ".");
+                sb.append(celda.isAlive() ? ALIVE : DEAD);
             }
             sb.append("\n");
         }

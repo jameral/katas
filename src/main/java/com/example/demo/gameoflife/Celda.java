@@ -1,12 +1,15 @@
 package com.example.demo.gameoflife;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Celda {
 
     private final int x;
     private final int y;
     private boolean isAlive;
     private boolean siguienteEstado;
-    private final Celda[] vecinos = new Celda[8];
+    private final Map<Vecino, Celda>vecinos = new HashMap<>();
 
     public Celda(int x, int y, boolean isAlive) {
         this.x = x;
@@ -30,7 +33,7 @@ public class Celda {
         isAlive = alive;
     }
 
-    public Celda[] getVecinos() {
+    public Map<Vecino, Celda> getVecinos() {
         return vecinos;
     }
 

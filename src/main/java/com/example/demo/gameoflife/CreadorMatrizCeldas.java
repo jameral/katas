@@ -1,70 +1,82 @@
 package com.example.demo.gameoflife;
 
+
+import java.util.Map;
+import java.util.Optional;
+
 public class CreadorMatrizCeldas {
 
     private final char[] estado;
     private final int ancho;
+    private final int alto;
     private final int limiteSuperiorY;
     private final int limiteSuperiorX;
     private final Celda[][] celdas;
 
     public CreadorMatrizCeldas(int alto, int ancho, String estadoInicial) {
         super();
-        this.ancho = ancho;
-        this.limiteSuperiorY = alto -1;
-        this.limiteSuperiorX = ancho -1;
         estado = estadoInicial.toCharArray();
+        this.ancho = ancho;
+        this.alto = alto;
+        limiteSuperiorY = alto -1;
+        limiteSuperiorX = ancho -1;
         celdas = new Celda[ancho][alto];
         crearFilas();
     }
 
     private void crearFilas(){
-        for (int fila = limiteSuperiorY; fila>= 0; fila--){
-            crearFila(fila);
+        for (int y = 0; y<alto; y++){
+            crearFila(y);
         }
     }
 
-    private void crearFila(int fila) {
-        for (int columna=0;columna<ancho;columna++){
-            Celda celda = crearCeldaSiNoExiste(fila, columna);
+    private void crearFila(int y) {
+        for (int x=0;x<ancho;x++){
+            Celda celda = recuperarCeldaOCrearlaSiNoExiste(x, y);
             setVecinos(celda);
         }
     }
 
-    private char getEstado(int y, int x){
-        int filaPedida = limiteSuperiorY - y;
-        return estado[filaPedida * this.ancho + x];
-    }
-
-    private Celda crearCeldaSiNoExiste(int fila, int columna) {
-        Celda celda = celdas[columna][fila];
-        if (celda == null){
-            char estado = getEstado(fila, columna);
-            celda = new Celda(columna, fila, estado == '*');
-            celdas[columna][fila] = celda;
-        }
-        return celda;
-    }
-
     private void setVecinos(Celda celda){
-        Vecinos[] vecinos = Vecinos.values();
-        Celda[] celdasVecinas = celda.getVecinos();
-        for (Vecinos vecino : vecinos){
-            celdasVecinas[vecino.getPosicion()] = recuperarVecino(celda, vecino);
+        Vecino[] vecinos = Vecino.values();
+        Map<Vecino, Celda> celdasVecinas = celda.getVecinos();
+        for (Vecino vecino : vecinos){
+            Celda celdaVecina = recuperarVecino(celda, vecino);
+            celdasVecinas.put(vecino, celdaVecina);
         }
     }
 
-    public Celda recuperarVecino(Celda celda, Vecinos vecino){
-        int posY = celda.getY() + vecino.getDesviacionY();
-        int posX = celda.getX() + vecino.getDesviacionX();
-        if (posicionValida(posY, posX)){
-            return crearCeldaSiNoExiste(posY, posX);
+    public Celda recuperarVecino(Celda celda, Vecino vecino){
+        int y = celda.getY() + vecino.getDesviacionY();
+        int x = celda.getX() + vecino.getDesviacionX();
+        if (posicionValida(x, y)){
+            return recuperarCeldaOCrearlaSiNoExiste(x, y);
         }
         return null;
     }
 
-    private boolean posicionValida(int posY, int posX) {
-        return posY <= limiteSuperiorY && posY >= 0 && posX <= limiteSuperiorX && posX >= 0;
+    private boolean posicionValida(int x, int y) {
+        return y <= limiteSuperiorY && y >= 0 && x <= limiteSuperiorX && x >= 0;
+    }
+
+    private Celda recuperarCeldaOCrearlaSiNoExiste(int x, int y) {
+        return recuperarCelda(x, y).orElseGet(() -> crearCelda(x,y));
+    }
+    private Optional<Celda> recuperarCelda(int x, int y){
+        return Optional.ofNullable(celdas[x][y]);
+    }
+    private Celda crearCelda(int x, int y) {
+        char estado = obtenerEstadoDeArrayAPartirDeCoordenadasDeMatriz(x, y);
+        Celda celda = new Celda(x, y, estado == '*');
+        celdas[x][y] = celda;
+        return celda;
+    }
+
+    private char obtenerEstadoDeArrayAPartirDeCoordenadasDeMatriz(int x, int y){
+        int filaPedida = limiteSuperiorY - y;
+        int posicionInicioFilaEnArray = filaPedida * ancho;
+        int posicionFinalEnArray = posicionInicioFilaEnArray + x;
+        return estado[posicionFinalEnArray];
     }
 
     public Celda[][] getCeldas() {

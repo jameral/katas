@@ -1,6 +1,6 @@
 package com.example.demo.gameoflife;
 
-public enum Vecinos {
+public enum Vecino {
 
     SUPERIOR_IZQUIERDO(0,-1, 1),
     SUPERIOR(1,0,1),
@@ -11,19 +11,18 @@ public enum Vecinos {
     INFERIOR_IZQUIERDO(6,-1,-1),
     IZQUIERDO(7,-1,0);
 
-    private final int posicion;
+    private final int posicionEnArrayVecinos;
     private final int desviacionX;
     private final int desviacionY;
 
-    Vecinos(int posicion, int desviacionX, int desviacionY) {
-        this.posicion = posicion;
+    Vecino(int posicionEnArrayVecinos, int desviacionX, int desviacionY) {
+        this.posicionEnArrayVecinos = posicionEnArrayVecinos;
         this.desviacionX = desviacionX;
         this.desviacionY = desviacionY;
     }
 
-    public int getPosicion() {
-
-        return posicion;
+    public int getPosicionEnArrayVecinos() {
+        return posicionEnArrayVecinos;
     }
 
     public int getDesviacionX() {
