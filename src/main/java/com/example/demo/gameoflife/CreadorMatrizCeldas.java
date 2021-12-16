@@ -37,18 +37,22 @@ public class CreadorMatrizCeldas {
         }
     }
 
+    private Celda recuperarCeldaOCrearlaSiNoExiste(int x, int y) {
+        return recuperarCelda(x, y).orElseGet(() -> crearCelda(x,y));
+    }
+
     private void establecerVecinos(Celda celda){
-        Vecino[] vecinos = Vecino.values();
-        Map<Vecino, Celda> celdasVecinas = celda.getVecinos();
-        for (Vecino vecino : vecinos){
-            Celda celdaVecina = recuperarVecino(celda, vecino);
-            celdasVecinas.put(vecino, celdaVecina);
+        PosicionesVecinas[] posicionesVecinas = PosicionesVecinas.values();
+        Map<PosicionesVecinas, Celda> celdasVecinas = celda.getVecinos();
+        for (PosicionesVecinas posicionVecina : posicionesVecinas){
+            Celda celdaVecina = recuperarVecino(celda, posicionVecina);
+            celdasVecinas.put(posicionVecina, celdaVecina);
         }
     }
 
-    public Celda recuperarVecino(Celda celda, Vecino vecino){
-        int y = celda.getY() + vecino.getDesviacionY();
-        int x = celda.getX() + vecino.getDesviacionX();
+    public Celda recuperarVecino(Celda celda, PosicionesVecinas posicionesVecinas){
+        int y = celda.getY() + posicionesVecinas.getDesviacionY();
+        int x = celda.getX() + posicionesVecinas.getDesviacionX();
         if (posicionValida(x, y)){
             return recuperarCeldaOCrearlaSiNoExiste(x, y);
         }
@@ -59,12 +63,10 @@ public class CreadorMatrizCeldas {
         return y <= limiteSuperiorY && y >= 0 && x <= limiteSuperiorX && x >= 0;
     }
 
-    private Celda recuperarCeldaOCrearlaSiNoExiste(int x, int y) {
-        return recuperarCelda(x, y).orElseGet(() -> crearCelda(x,y));
-    }
     private Optional<Celda> recuperarCelda(int x, int y){
         return Optional.ofNullable(celdas[x][y]);
     }
+
     private Celda crearCelda(int x, int y) {
         char estado = obtenerEstadoDeArrayAPartirDeCoordenadasDeMatriz(x, y);
         boolean isAlive = estado == '*';

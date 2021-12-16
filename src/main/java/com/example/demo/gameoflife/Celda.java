@@ -9,7 +9,7 @@ public class Celda {
     private final int y;
     private boolean vivo;
     private boolean siguienteEstado;
-    private final Map<Vecino, Celda>vecinos = new HashMap<>();
+    private final Map<PosicionesVecinas, Celda>vecinos = new HashMap<>();
 
     public Celda(int x, int y, boolean vivo) {
         this.x = x;
@@ -33,7 +33,7 @@ public class Celda {
         this.vivo = vivo;
     }
 
-    public Map<Vecino, Celda> getVecinos() {
+    public Map<PosicionesVecinas, Celda> getVecinos() {
         return vecinos;
     }
 

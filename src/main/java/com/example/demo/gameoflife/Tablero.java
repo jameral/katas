@@ -34,8 +34,8 @@ public class Tablero {
         long vecinosVivos = calcularVecinosVivosDeCelda(celda);
         boolean celdaVive = celda.isVivo();
         boolean faltaPoblacion = vecinosVivos < 2;
-        boolean sobrePoblacion = vecinosVivos > 3;
-        if (celdaVive && (faltaPoblacion || sobrePoblacion)){
+        boolean sobraPoblacion = vecinosVivos > 3;
+        if (celdaVive && (faltaPoblacion || sobraPoblacion)){
             celda.setSiguienteEstado(false);
         } else if (!celdaVive && vecinosVivos == 3){
             celda.setSiguienteEstado(true);
@@ -60,7 +60,7 @@ public class Tablero {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder(alto * ancho + alto +5);
+        StringBuilder sb = new StringBuilder(alto * ancho + alto + 6);
         sb.append(ancho).append("   ").append(alto).append("\n");
         for (int i= alto-1;i>=0;i--){
             for (int j=0;j<=ancho-1;j++){

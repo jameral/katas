@@ -38,7 +38,7 @@ public class GameOfLifeTests {
 
     @Test
     void smolMatrix(){
-        int tamX = 5;
+        int tamX = 6;
         int tamY = 5;
         String matrix = getSmolMatrixAsString();
         Tablero tablero = new Tablero(tamY,tamX, matrix);
@@ -52,14 +52,32 @@ public class GameOfLifeTests {
     }
     @Test
     void smolMatrix2(){
-        int tamX = 5;
+        int tamX = 6;
         int tamY = 5;
-        GameOfLife gameOfLife = new GameOfLife(tamX, tamY);
-        gameOfLife.setLivingCell(0,2);
-        gameOfLife.setLivingCell(1,2);
-        gameOfLife.setLivingCell(2,2);
-        gameOfLife.setLivingCell(3,2);
-        gameOfLife.setLivingCell(4,2);
+        GameOfLife gameOfLife = new GameOfLife(tamY, tamX);
+        gameOfLife.setLivingCell(0,0);
+        gameOfLife.setLivingCell(1,0);
+        gameOfLife.setLivingCell(2,0);
+        gameOfLife.setLivingCell(3,0);
+        gameOfLife.setLivingCell(4,0);
+
+        gameOfLife.setLivingCell(0,1);
+        gameOfLife.setLivingCell(1,1);
+        gameOfLife.setLivingCell(2,1);
+        gameOfLife.setLivingCell(3,1);
+        gameOfLife.setLivingCell(4,1);
+
+        gameOfLife.setLivingCell(0,4);
+        gameOfLife.setLivingCell(1,4);
+        gameOfLife.setLivingCell(2,4);
+        gameOfLife.setLivingCell(3,4);
+        gameOfLife.setLivingCell(4,4);
+
+        gameOfLife.setLivingCell(0,5);
+        gameOfLife.setLivingCell(1,5);
+        gameOfLife.setLivingCell(2,5);
+        gameOfLife.setLivingCell(3,5);
+        gameOfLife.setLivingCell(4,5);
         for (int i=0;i<1000;i++){
             System.out.println("Generación "+ i);
             System.out.println(gameOfLife);
@@ -70,11 +88,11 @@ public class GameOfLifeTests {
     }
     String getSmolMatrixAsString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("..*..");
-        sb.append("..*..");
-        sb.append("..*..");
-        sb.append("..*..");
-        sb.append("..*..");
+        sb.append("**..**");
+        sb.append("**..**");
+        sb.append("**..**");
+        sb.append("**..**");
+        sb.append("**..**");
         return sb.toString();
     }
     String getBigMatrixAsString(int tamX, int tamY){
