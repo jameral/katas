@@ -1,14 +1,11 @@
 package com.example.demo.greed;
 
 import java.util.Arrays;
-import static com.example.demo.greed.ValorPuntuacion.*;
 public class ElJueguito {
 
     public int score(int[] tiradas) {
         int[] repeticionesPorTirada = calcularRepeticionesPorTirada(tiradas);
         PuntuacionAcumulada puntuacionAcumulada = PuntuacionAcumulada.crearPuntuacion(repeticionesPorTirada);
-        UNO.getTirada();
-        DOS.getTirada();
         return puntuacionAcumulada.calcularPuntuacionFinal(tiradas.length);
     }
 
